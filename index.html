@@ -200,7 +200,8 @@ body, html {
 
 <div class="content">
     <div class="video-player" id="main-video">
-      <iframe id="video-frame" src="https://drive.google.com/file/d/1Qu_XB8cAXkYqHPsRD97pbCkY7hOXCvoY/preview" allow="autoplay; fullscreen" frameborder="0" allowfullscreen playsinline></iframe>
+    <iframe id="video-frame" src="https://drive.google.com/file/d/1Qu_XB8cAXkYqHPsRD97pbCkY7hOXCvoY/preview" allow="autoplay; fullscreen; encrypted-media" frameborder="0" allowfullscreen playsinline></iframe>
+
         <div class="pin-indicator" id="pin-indicator"></div> <!-- إعادة المربع الأحمر -->
     </div>
 </div>
@@ -262,19 +263,26 @@ body, html {
 </div>
 
 <script>
-  document.getElementById('main-video').addEventListener('click', function() {
-    const videoFrame = document.getElementById('video-frame');
-    if (videoFrame.requestFullscreen) {
-        videoFrame.requestFullscreen();
+  
+  document.getElementById('video-frame').addEventListener('click', function() {
+    if (this.requestFullscreen) {
+        this.requestFullscreen();
+    } else if (this.mozRequestFullScreen) { // Firefox
+        this.mozRequestFullScreen();
+    } else if (this.webkitRequestFullscreen) { // Chrome, Safari and Opera
+        this.webkitRequestFullscreen();
+    } else if (this.msRequestFullscreen) { // IE/Edge
+        this.msRequestFullscreen();
     }
 });
 
+  
     // إظهار المحتوى بعد 3 ثوانٍ من التحميل
     window.onload = function() {
         setTimeout(() => {
             document.getElementById('loader-wrapper').style.display = 'none';
             document.querySelector('.content').style.display = 'block';
-        }, );
+        }, 200);
     };
 
     // إظهار وإخفاء وصف الفيديو
